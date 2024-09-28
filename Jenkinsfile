@@ -28,6 +28,7 @@ pipeline {
         }
         stage('Inti'){
             steps{
+                echo 'this is terraform init stage!!!'
                 sh """
                     cd terraform
                     terraform init
@@ -36,20 +37,22 @@ pipeline {
         }
         stage('Plan'){
             steps{
+                echo 'this is terraform plan stage!!!'
                 sh """
                     cd terraform
                     terraform plan -var="app_version=${params.appVersion}"
                 """
             }
         }
-        // stage('Deploy'){
-        //     steps{
-        //         sh """
-        //             cd terraform
-        //             terraform plan
-        //         """
-        //     }
-        // }
+        stage('Deploy'){
+            steps{
+                echo 'this is terraform apply stage!!!'
+                sh """
+                    cd terraform
+                    terraform apply -auto-approve -var="app_version=${params.appVersion}"
+                """
+            }
+        }
 
     }
 
